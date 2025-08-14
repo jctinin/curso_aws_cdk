@@ -1,7 +1,12 @@
 package com.myorg;
 
 import software.constructs.Construct;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.Fn;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -34,6 +39,12 @@ public class Service01Stack extends Stack {
                 // ApplicationLoadBalancedFargateService.Builder.create(this, "Service01")
                 // .cluster(cluster)
                 // .build();
+
+                Map<String, String> envVariables = new HashMap<>();
+                envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mariadb://" + Fn.importValue("rds-endpoint")
+                                + ":3306/aws_project01?createDatabaseIfNotExist=true");
+                envVariables.put("SPRING_DATASOURCE_USERNAME", "Admin");
+                envVariables.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("rds-password"));
 
                 ApplicationLoadBalancedFargateService service01 = ApplicationLoadBalancedFargateService.Builder
                                 .create(this, "ALB01") // Cria o serviço Fargate com o nome lógico "ALB01" no CDK
@@ -70,6 +81,7 @@ public class Service01Stack extends Stack {
                                                                                 .build())
                                                                 .streamPrefix("Service01") // Prefixo do stream de logs
                                                                 .build())) // Configura o driver de logs para AWS
+                                                                .environment(envVariables)
                                                                            // CloudWatch
                                                 .build()) // Finaliza as opções de imagem da tarefa
                                 .publicLoadBalancer(true)
