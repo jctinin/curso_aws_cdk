@@ -1,25 +1,23 @@
 package com.myorg;
 
 import software.amazon.awscdk.App;
-import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.StackProps;
+
 
 public class CursoAwsCdkApp {
         public static void main(final String[] args) {
                 App app = new App();
 
-                Environment env = Environment.builder()
-                                .account(System.getenv("CDK_DEFAULT_ACCOUNT"))
-                                .region(System.getenv("CDK_DEFAULT_REGION"))
-                                .build();
 
-                new CursoAwsCdkStack(app, "CursoAwsCdkStack", StackProps.builder()
-                                .env(env)
-                                .build());
+                // Environment env = Environment.builder()
+                //                 .account(System.getenv("CDK_DEFAULT_ACCOUNT"))
+                //                 .region(System.getenv("CDK_DEFAULT_REGION"))
+                //                 .build();
 
-                VpcStack vpcStack = new VpcStack(app, "Vpc", StackProps.builder()
-                                .env(env)
-                                .build());
+                // new CursoAwsCdkStack(app, "CursoAwsCdkStack", StackProps.builder()
+                //                 .env(env)
+                //                 .build());
+
+                VpcStack vpcStack = new VpcStack(app, "Vpc");
 
                 ClusterStack clusterStack = new ClusterStack(app, "Cluster", vpcStack.getVpc());
                 clusterStack.addDependency(vpcStack); // Ensure VPC is created before the cluster

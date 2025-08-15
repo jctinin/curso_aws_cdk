@@ -44,7 +44,7 @@ public class Service01Stack extends Stack {
                 envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mariadb://" + Fn.importValue("rds-endpoint")
                                 + ":3306/aws_project01?createDatabaseIfNotExist=true");
                 envVariables.put("SPRING_DATASOURCE_USERNAME", "Admin");
-                envVariables.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("rds-password"));
+                envVariables.put("SPRING_DATASOURCE_SECRET-ARN", Fn.importValue("rds-password-secret-arn"));
 
                 ApplicationLoadBalancedFargateService service01 = ApplicationLoadBalancedFargateService.Builder
                                 .create(this, "ALB01") // Cria o serviço Fargate com o nome lógico "ALB01" no CDK
