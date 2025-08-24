@@ -25,7 +25,8 @@ public class CursoAwsCdkApp {
                 RdsStack rdsStack = new RdsStack(app, "Rds", vpcStack.getVpc());
                 rdsStack.addDependency(vpcStack); // Ensure VPC is created before the RDS instance
 
-                Service01Stack service01Stack = new Service01Stack(app, "Service01", clusterStack.getCluster());
+                Service01Stack service01Stack = new Service01Stack(app, "Service01", clusterStack.getCluster(), vpcStack.getVpc());
+
                 service01Stack.addDependency(clusterStack); // Ensure cluster is created before the service
                 service01Stack.addDependency(rdsStack); // Ensure RDS is created before the service
 
